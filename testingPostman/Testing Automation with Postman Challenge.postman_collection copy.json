@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "de3011e5-f0f6-4f05-ac47-43929a5a21f8",
+		"name": "Testing Automation with Postman Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "399192"
+	},
+	"item": [
+		{
+			"name": "Get users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const response = pm.response.json();",
+							"",
+							"const email = Object.keys(response.data[0]).includes('email');",
+							"console.log(response.data[0]);",
+							"",
+							"pm.test(\"Validate email key\", () => {",
+							"    pm.expect(true).to.be.eql(email)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}users?page=2",
+					"host": [
+						"{{baseUrl}}users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get users by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const response = pm.response.json();",
+							"",
+							"const hasId = Object.keys(response.data).includes('id');",
+							"console.log(hasId);",
+							"",
+							"pm.test(\"Validate id key\", () => {",
+							"    pm.expect(true).to.be.eql(hasId)",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}users?id={{userId}}",
+					"host": [
+						"{{baseUrl}}users"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{userId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"const response = pm.response.json();",
+							"",
+							"const email = Object.keys(response.data[0]).includes('email');",
+							"console.log(response.data[0]);",
+							"",
+							"pm.test(\"Validate email key\", () => {",
+							"    pm.expect(true).to.be.eql(email)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"data\":\n        [{\n            \"id\": \"{{$randomUUID}}\",\n            \"email\": \"{{$randomExampleEmail}}\",\n            \"first_name\": \"{{$randomFirstName}}\",\n            \"last_name\": \"{{$randomLastName}}\",\n            \"avatar\": \"{{$randomImageUrl}}\"\n        }]\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}users",
+					"host": [
+						"{{baseUrl}}users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://reqres.in/api/"
+		}
+	]
+}
